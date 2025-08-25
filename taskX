@@ -1,0 +1,31 @@
+// File: cypress/e2e/purchase.cy.ts
+decribe('Test sulla login della pagina e-commerce Demo', () => {
+  it ('Effettua la login con successo, aggiungi un prodotto nel carrello e finalizza l'acquisto con fattura', () => {
+    // Vista l'indirizzo https
+    cy.visit('https://saucedemo.com/');
+      // Inserisci la Username valida e corretta standard_user
+      cy.get('#Username').type ('Username_valida');
+      // Inserisci la Password valida e corretta secret_sauce
+      cy.get('#Password').type ('Password_valida');
+      // Clicca il tasto Login per effettuare l'accesso
+      cy.get('button:contains('#Login')).click();
+      // Verifica che la Login sia andata a buon fine, verifica nuovo indirizzo https://www.saucedemo.com/inventory.html
+      cy.url().should('include', 'https://www.saucedemo.com/inventory.html');
+      // Aggiungi un prodotto al carrello per esempio Sauce Labs Backpack
+        cy.contains('Sauce Labs Backpack').click();
+        cy.contains('Add to cart').click();
+  });
+  // Verifica il contenuto del carrello
+  cy.get('#shopping_cart_container-icon').click();
+  // Verifica che nel carrello ci sia il prodotto desiderato ovvero Sauce Labs Backpack
+  cy.contains('Sauce Labs Backpack').should('be.visible');
+  // Clicca sul bottone Checkout
+  cy.get('button:contains('#Checkout'));
+  // Compila i campi presenti in schermata Nome, Cognome e Codice Postale
+  cy.get('#First Name').type ('Mario');
+  cy.get('#Last Name').type ('Rossi');
+  cy.get('#Zip/Postal Code').type ('70131');
+  // Clicca sul bottone Continue
+  cy.get('button:contains('#Continue'));
+  // Passa alla schermata successiva Checkout: Overview, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-step-two.html
+  cy.url().should('include', 'https://www.saucedemo.com/checkout-step-two.html');
