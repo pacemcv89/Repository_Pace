@@ -1,7 +1,7 @@
 // File: cypress/e2e/purchase.cy.ts
-decribe('Test sulla login della pagina e-commerce Demo', () => {
-  it ('Effettua la login con successo, aggiungi un prodotto nel carrello e finalizza l'acquisto con fattura', () => {
-    // Vista l'indirizzo https
+describe('Test sulla login della pagina e-commerce Demo', () => {
+  it ('Effettua la login con successo', () => {
+    // Vista l'indirizzo https://saucedemo.com/
     cy.visit('https://saucedemo.com/');
       // Inserisci la Username valida e corretta standard_user
       cy.get('#Username').type ('Username_valida');
@@ -15,17 +15,27 @@ decribe('Test sulla login della pagina e-commerce Demo', () => {
         cy.contains('Sauce Labs Backpack').click();
         cy.contains('Add to cart').click();
   });
-  // Verifica il contenuto del carrello
-  cy.get('#shopping_cart_container-icon').click();
-  // Verifica che nel carrello ci sia il prodotto desiderato ovvero Sauce Labs Backpack
-  cy.contains('Sauce Labs Backpack').should('be.visible');
-  // Clicca sul bottone Checkout
-  cy.get('button:contains('#Checkout'));
-  // Compila i campi presenti in schermata Nome, Cognome e Codice Postale
-  cy.get('#First Name').type ('Mario');
-  cy.get('#Last Name').type ('Rossi');
-  cy.get('#Zip/Postal Code').type ('70131');
-  // Clicca sul bottone Continue
-  cy.get('button:contains('#Continue'));
-  // Passa alla schermata successiva Checkout: Overview, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-step-two.html
-  cy.url().should('include', 'https://www.saucedemo.com/checkout-step-two.html');
+  it ('Carica il prodotto scelto nel carrello e finalizza l'acquisto', () => {
+    // Verifica il contenuto del carrello
+    cy.get('#shopping_cart_container').click();
+    // Verifica che nel carrello ci sia il prodotto desiderato ovvero Sauce Labs Backpack
+    cy.contains('Sauce Labs Backpack').should('be.visible');
+    // Clicca sul bottone Checkout
+    cy.get('button:contains('#Checkout'));
+    // Compila i campi presenti in schermata Nome, Cognome e Codice Postale
+    cy.get('#First Name').type ('Mario');
+    cy.get('#Last Name').type ('Rossi');
+    cy.get('#Zip/Postal Code').type ('70131');
+    // Clicca sul bottone Continue
+    cy.get('button:contains('#Continue'));
+    // Passa alla schermata successiva Checkout: Overview, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-step-two.html
+    cy.url().should('include', 'https://www.saucedemo.com/checkout-step-two.html');
+    // Clicca su Finish per finalizzare l'acquisto
+    cy.get('button:contains('#Finish')).click();
+    // Verifica a video che l'acquisto sia andato a buon fine e che l'ordine sia partito, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-complete.html
+    cy.url().should('include', 'https://www.saucedemo.com/checkout-complete.html');
+    // Clicca Back Home per tornare sulla homepage Products all'indirizzo https://www.saucedemo.com/inventory.html
+    cy.get('button:contains('#Back Home')).click();
+    cy.url().should('include', 'https://www.saucedemo.com/inventory.html');
+  });
+});  
