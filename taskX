@@ -4,24 +4,25 @@ describe('Test sulla login della pagina e-commerce Demo', () => {
       // Vista l'indirizzo https://saucedemo.com/
       cy.visit('https://saucedemo.com/');
       // Inserisci la Username valida e corretta standard_user
-      cy.get('#Username').type ('Username_valida');
+    cy.get('[data-test="username"]','#Username').type ('Username_valida');
       // Inserisci la Password valida e corretta secret_sauce
-      cy.get('#Password').type ('Password_valida');
+      cy.get('[data-test="password"]','#Password').type ('Password_valida');
       // Clicca il tasto Login per effettuare l'accesso
       cy.get('[data-test="login-button"]','#Login').click();
       // Verifica che la Login sia andata a buon fine, verifica nuovo indirizzo https://www.saucedemo.com/inventory.html
       cy.url().should('include', 'https://www.saucedemo.com/inventory.html');
       // Aggiungi un prodotto al carrello per esempio Sauce Labs Backpack
-        cy.contains('Sauce Labs Backpack').click();
-        cy.contains('Add to cart').click();
+        cy.contains('[data-test="inventory-item-name"]','#Sauce Labs Backpack').click();
+        cy.contains('[data-test="add-to-cart-sauce-labs-backpack"]','#Add to cart').click();
   });
   it ('Carica il/i prodotto/i scelto nel carrello e finalizza l'acquisto', () => {
     // Verifica il contenuto del carrello
     cy.get('#shopping_cart_container').click();
+    cy.contains(('[data-test="inventory-item-name"]'), '#Your Cart'.should('be.visible'));
     // Verifica che nel carrello ci sia il prodotto desiderato ovvero Sauce Labs Backpack
-    cy.contains('Sauce Labs Backpack').should('be.visible');
+    cy.contains('[data-test="inventory-item-name"]','#Sauce Labs Backpack').should('be.visible');
     // Clicca sul bottone Checkout
-    cy.get('button:contains('#Checkout'));
+    cy.get('[data-test="checkout"]','button:contains('#Checkout'));
     // Compila i campi presenti in schermata Nome, Cognome e Codice Postale
   cy.get('[data-test="firstName"]').type ('Mario');
     cy.get('[data-test="lastName"]').type ('Rossi');
@@ -31,11 +32,11 @@ describe('Test sulla login della pagina e-commerce Demo', () => {
     // Passa alla schermata successiva Checkout: Overview, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-step-two.html
     cy.url().should('include', 'https://www.saucedemo.com/checkout-step-two.html');
     // Clicca su Finish per finalizzare l'acquisto
-    cy.get('button:contains('#Finish')).click();
+  cy.get('[data-test="finish"]','button:contains('#Finish')).click();
     // Verifica a video che l'acquisto sia andato a buon fine e che l'ordine sia partito, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-complete.html
     cy.url().should('include', 'https://www.saucedemo.com/checkout-complete.html');
     // Clicca Back Home per tornare sulla homepage Products all'indirizzo https://www.saucedemo.com/inventory.html
-    cy.get('button:contains('#Back Home')).click();
+    cy.get('[data-test="back-to-products"]','button:contains('#Back Home')).click();
     cy.url().should('include', 'https://www.saucedemo.com/inventory.html');
   });
 });  
