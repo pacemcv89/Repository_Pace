@@ -3,9 +3,9 @@ describe('Test sulla login della pagina e-commerce Demo', () => {
   it ('Effettua la login con successo', () => {
       // Vista l'indirizzo https://saucedemo.com/
       cy.visit('https://saucedemo.com/');
-      // Inserisci la Username valida e corretta standard_user
+      // Inserisci la Username valida e corretta "standard_user"
     cy.get('[data-test="username"]','#Username').type ('Username_valida');
-      // Inserisci la Password valida e corretta secret_sauce
+      // Inserisci la Password valida e corretta "secret_sauce"
       cy.get('[data-test="password"]','#Password').type ('Password_valida');
       // Clicca il tasto Login per effettuare l'accesso
       cy.get('[data-test="login-button"]','#Login').click();
@@ -32,10 +32,12 @@ describe('Test sulla login della pagina e-commerce Demo', () => {
     // Passa alla schermata successiva Checkout: Overview, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-step-two.html
     cy.url().should('include', 'https://www.saucedemo.com/checkout-step-two.html');
     // Clicca su Finish per finalizzare l'acquisto
-  cy.get('[data-test="finish"]','button:contains('#Finish')).click();
+    cy.get('[data-test="finish"]','button:contains('#Finish')).click();
     // Verifica a video che l'acquisto sia andato a buon fine e che l'ordine sia partito, verifica il nuovo indirizzo https://www.saucedemo.com/checkout-complete.html
     cy.url().should('include', 'https://www.saucedemo.com/checkout-complete.html');
     // Clicca Back Home per tornare sulla homepage Products all'indirizzo https://www.saucedemo.com/inventory.html
+    cy.contains('[data-test="complete-header"]','#Thank you for your order!').should('be.visible');
+    cy.contains('[data-test="complete-text"]','#Your order has been dispatched, and will arrive just as fast as the pony can get there!').should('be.visible');
     cy.get('[data-test="back-to-products"]','button:contains('#Back Home')).click();
     cy.url().should('include', 'https://www.saucedemo.com/inventory.html');
   });
